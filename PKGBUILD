@@ -12,7 +12,7 @@ depends=('gcc-libs' 'coreutils' 'systemd')
 makedepends=('cmake')
 provides=({rockchip-,}mpp="${pkgver}")
 conflicts=({rockchip-,}mpp)
-options=(!lto debug strip)
+options=(!lto strip)
 install='install'
 source=(
   "git+${url}.git#branch=develop"
