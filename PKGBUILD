@@ -27,8 +27,7 @@ sha256sums=(
 
 build() {
   cmake -S mpp -B build \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DHAVE_DRM=ON
+    -DCMAKE_BUILD_TYPE=Release
   cmake --build build
 }
 
