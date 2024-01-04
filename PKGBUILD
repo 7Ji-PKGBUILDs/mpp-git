@@ -8,7 +8,7 @@ pkgdesc='Rockchip VPU Media Process Platform (MPP) for hardware video decode lat
 arch=('x86_64' 'aarch64' 'arm7h')
 url='https://github.com/rockchip-linux/mpp'
 license=('Apache')
-depends=('gcc-libs' 'coreutils' 'systemd')
+depends=('gcc-libs' 'coreutils' 'udev')
 makedepends=('cmake')
 provides=({rockchip-,}mpp="${pkgver}")
 conflicts=({rockchip-,}mpp)
