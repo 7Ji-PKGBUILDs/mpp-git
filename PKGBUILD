@@ -2,7 +2,7 @@
 # Maintainer: 7Ji <pugokushin@gmail.com>
 
 pkgname='mpp-git'
-pkgver='r3406.3b278438'
+pkgver=1.0.4.r3472.fdeb8c37
 pkgrel=1
 pkgdesc='Rockchip VPU Media Process Platform (MPP) for hardware video decode latest revision from git'
 arch=('x86_64' 'aarch64' 'arm7h')
@@ -33,7 +33,10 @@ build() {
 
 pkgver() {
   cd mpp
-  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+  printf "%s.r%s.%s" \
+    "$(git describe --tags)" \
+    "$(git rev-list --count HEAD)" \
+    "$(git rev-parse --short HEAD)"
 }
 
 package() {
