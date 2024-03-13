@@ -33,7 +33,7 @@ build() {
 pkgver() {
   cd mpp
   printf "%s.r%s.%s" \
-    "$(git describe --tags)" \
+    "$(git describe --tags --abbrev=0)" \
     "$(git rev-list --count HEAD)" \
     "$(git rev-parse --short HEAD)"
 }
