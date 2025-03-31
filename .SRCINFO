@@ -16,8 +16,8 @@ pkgbase = mpp-git
 	provides = mpp=1.0.4.r3472.fdeb8c37
 	conflicts = rockchip-mpp
 	conflicts = mpp
-	options = !lto
 	options = strip
+	options = !lto
 	source = git+https://github.com/rockchip-linux/mpp.git#branch=develop
 	source = 60-mpp.rules
 	source = install

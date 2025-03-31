@@ -25,7 +25,10 @@ sha256sums=('SKIP'
 )
 
 build() {
-  cmake -S mpp -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${pkgdir}/usr
+  cmake -S mpp -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=${pkgdir}/usr \
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5
   cmake --build build
 }
 
@@ -38,7 +41,7 @@ pkgver() {
 }
 
 package() {
-  cmake --install build 
+  cmake --install build
 
   # mpp needs to access /dev/mpp_service /dev/rga /dev/dma_heap/ ad so on
   # access to those devices are +rw'ed to video groups with those rules
