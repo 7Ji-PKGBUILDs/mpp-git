@@ -2,8 +2,8 @@
 # Maintainer: 7Ji <pugokushin@gmail.com>
 
 pkgname='mpp-git'
-pkgver=1.0.4.r3472.fdeb8c37
-pkgrel=3
+pkgver=1.0.11.r4092.437bfbeb
+pkgrel=1
 pkgdesc='Rockchip VPU Media Process Platform (MPP) for hardware video decode latest revision from git'
 arch=('x86_64' 'aarch64' 'armv7h')
 url='https://github.com/rockchip-linux/mpp'
@@ -28,7 +28,8 @@ build() {
   cmake -S mpp -B build \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=${pkgdir}/usr \
-    -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+    -DBUILD_TEST=OFF
   cmake --build build
 }
 
