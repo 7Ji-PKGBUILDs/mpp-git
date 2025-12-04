@@ -26,7 +26,7 @@ sha256sums=('SKIP'
 
 build() {
   cmake -S mpp -B build \
-    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -DCMAKE_INSTALL_PREFIX=${pkgdir}/usr \
     -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
     -DBUILD_TEST=OFF
