@@ -2,8 +2,8 @@
 # Maintainer: 7Ji <pugokushin@gmail.com>
 
 pkgname='mpp-git'
-pkgver=1.0.11.r4092.437bfbeb
-pkgrel=1
+pkgver=1.0.11.r4218.b13eb806
+pkgrel=2
 pkgdesc='Rockchip VPU Media Process Platform (MPP) for hardware video decode latest revision from git'
 arch=('x86_64' 'aarch64' 'armv7h')
 url='https://github.com/hermanChen/mpp'
@@ -47,4 +47,6 @@ package() {
   # mpp needs to access /dev/mpp_service /dev/rga /dev/dma_heap/ ad so on
   # access to those devices are +rw'ed to video groups with those rules
   install -m644 -Dt "${pkgdir}/usr/lib/udev/rules.d" 60-mpp.rules
+  install -m644 -Dt "${pkgdir}/usr/lib/udev/rules.d" 60-mpp.rules
+  install -m644 -Dt "${pkgdir}/usr/lib" ${srcdir}/build/mpp/libmpp_ext.so
 }
