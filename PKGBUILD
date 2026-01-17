@@ -2,8 +2,8 @@
 # Maintainer: 7Ji <pugokushin@gmail.com>
 
 pkgname='mpp-git'
-pkgver=1.0.11.r4218.b13eb806
-pkgrel=2
+pkgver=1.0.11.r4037.4ed4f778
+pkgrel=1
 pkgdesc='Rockchip VPU Media Process Platform (MPP) for hardware video decode latest revision from git'
 arch=('x86_64' 'aarch64' 'armv7h')
 url='https://github.com/hermanChen/mpp'
@@ -24,8 +24,17 @@ sha256sums=('SKIP'
   'e41004dc18f77d37b23f84464c4367c7ccf94d8e86b6f751437b685322e153d2'
 )
 
+_switchtag(){
+  _tag=$(git tag -l --sort=creatordate | tail -1)
+  git checkout $_tag --quiet
+  git reset --hard --quiet
+  printf $_tag
+}
+
 build() {
-  cmake -S mpp -B build \
+  cd mpp
+  _tag=$(_switchtag)
+  cmake -S . -B build \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -DCMAKE_INSTALL_PREFIX=${pkgdir}/usr \
     -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
@@ -35,6 +44,7 @@ build() {
 
 pkgver() {
   cd mpp
+  _tag=$(_switchtag)
   printf "%s.r%s.%s" \
     "$(git describe --tags --abbrev=0)" \
     "$(git rev-list --count HEAD)" \
@@ -42,11 +52,12 @@ pkgver() {
 }
 
 package() {
+  cd mpp
   cmake --install build
 
   # mpp needs to access /dev/mpp_service /dev/rga /dev/dma_heap/ ad so on
   # access to those devices are +rw'ed to video groups with those rules
-  install -m644 -Dt "${pkgdir}/usr/lib/udev/rules.d" 60-mpp.rules
-  install -m644 -Dt "${pkgdir}/usr/lib/udev/rules.d" 60-mpp.rules
-  install -m644 -Dt "${pkgdir}/usr/lib" ${srcdir}/build/mpp/libmpp_ext.so
+  install -m644 -Dt "${pkgdir}/usr/lib/udev/rules.d" ../60-mpp.rules
+  install -m644 -Dt "${pkgdir}/usr/lib/udev/rules.d" ../60-mpp.rules
+  # install -m644 -Dt "${pkgdir}/usr/lib" ${srcdir}/build/mpp/libmpp_ext.so
 }
