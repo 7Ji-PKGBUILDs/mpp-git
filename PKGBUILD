@@ -2,20 +2,21 @@
 # Maintainer: 7Ji <pugokushin@gmail.com>
 
 pkgname='mpp-git'
-pkgver=1.0.11.r4037.4ed4f778
+pkgver=1.0.11.r4191.a9380ef3
 pkgrel=1
 pkgdesc='Rockchip VPU Media Process Platform (MPP) for hardware video decode latest revision from git'
 arch=('x86_64' 'aarch64' 'armv7h')
 url='https://github.com/hermanChen/mpp'
 license=('Apache')
 depends=('gcc-libs' 'coreutils' 'udev')
-makedepends=('cmake')
+makedepends=('cmake' 'gitweb-dlagent')
 provides=({rockchip-,}mpp="${pkgver}")
 conflicts=({rockchip-,}mpp)
 options=(!lto strip)
 install='install'
+_url="gitweb-dlagent://github.com/nyanmisaka/rk-mirrors.git#branch=jellyfin-mpp"
 source=(
-  "git+${url}.git#branch=develop"
+  $_url
   '60-mpp.rules'
   'install'
 )
@@ -23,17 +24,10 @@ sha256sums=('SKIP'
   '05c4e6bf492d982db968e4f0a679634688c08c295f975a884cb2a4b12c65ab86'
   'e41004dc18f77d37b23f84464c4367c7ccf94d8e86b6f751437b685322e153d2'
 )
-
-_switchtag(){
-  _tag=$(git tag -l --sort=creatordate | tail -1)
-  git checkout $_tag --quiet
-  git reset --hard --quiet
-  printf $_tag
-}
+DLAGENTS+=('gitweb-dlagent::/usr/bin/gitweb-dlagent sync %u')
 
 build() {
-  cd mpp
-  _tag=$(_switchtag)
+  cd rk-mirrors
   cmake -S . -B build \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -DCMAKE_INSTALL_PREFIX=${pkgdir}/usr \
@@ -43,16 +37,15 @@ build() {
 }
 
 pkgver() {
-  cd mpp
-  _tag=$(_switchtag)
-  printf "%s.r%s.%s" \
-    "$(git describe --tags --abbrev=0)" \
-    "$(git rev-list --count HEAD)" \
-    "$(git rev-parse --short HEAD)"
+  cd rk-mirrors
+  local _vers=$(sed -n 's/##[[:space:]]\+\([0-9.]\+\).*/\1/p' CHANGELOG.md | head -n 1)
+  local _commits=$(gitweb-dlagent version ${_url} --pattern \{revision\})
+  local _hash=$(gitweb-dlagent version ${_url} --pattern \{commit:.8s\})
+  printf "%s.r%s.%s" $_vers $_commits $_hash
 }
 
 package() {
-  cd mpp
+  cd rk-mirrors
   cmake --install build
 
   # mpp needs to access /dev/mpp_service /dev/rga /dev/dma_heap/ ad so on
